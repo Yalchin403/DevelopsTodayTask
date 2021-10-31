@@ -1,13 +1,14 @@
 from rest_framework import viewsets
-from rest_framework.authentication import SessionAuthentication
+from knox.auth import TokenAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.db.models import Count
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer, UpVoteSerializer
+from django.http import HttpResponse
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    authentication_classes = (SessionAuthentication,)
+    authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = PostSerializer
     http_method_names = ['get', 'post', 'delete', 'put']
@@ -26,7 +27,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    authentication_classes = (SessionAuthentication,)
+    authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = CommentSerializer
     http_method_names = ['get', 'post', 'put', 'delete']
@@ -45,7 +46,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class UpVoteViewSet(viewsets.ModelViewSet):
-    authentication_classes = (SessionAuthentication,)
+    authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = UpVoteSerializer
     http_method_names = ['get', 'put',]

@@ -35,7 +35,9 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'backend',
+    'knox',
     'rest_framework',
+    'rest_framework.authtoken',
     'django_celery_beat',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -110,6 +112,13 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'knox.auth.TokenAuthentication',
+    ]
+}
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -143,11 +152,10 @@ CELERY_RESULT_BACKEND = "redis://redis:6379"
 CELERY_BEAT_SCHEDULE = {
     "schedule_task": {
         "task": "backend.tasks.reset_up_votes",
-        "schedule": 10.0,
+        "schedule": crontab(minute=0, hour=0),
     },
 }
 
 """
-crontab(minute=0, hour=0)
 for testing purpose, you can use "schedule": 5.0 above
 """

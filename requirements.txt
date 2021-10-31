@@ -14,6 +14,9 @@ django-celery-beat==2.2.1
 django-timezone-field==4.2.1
 djangorestframework==3.12.4
 flake8==4.0.1
+knox
+jinja2
+boto3
 kombu==5.1.0
 mccabe==0.6.1
 mypy-extensions==0.4.3
