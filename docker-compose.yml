@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+
+  db:
+      image: postgres:latest
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+
+  migration:
+    build: .
+    command:  bash -c "python3 manage.py makemigrations && python3 manage.py migrate"
+    depends_on:
+      - db
+
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    links:
+      - db:db
+      - redis:redis
+    depends_on:
+      - migration
+
+    command: bash -c "python3 manage.py runserver 0.0.0.0:8000"
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: madefire/chordtest
+    command: bash -c "celery -A news_board worker -l INFO"
+    environment:
+      - BROKER_URL=redis://redis:6379/0
+      - RESULT_BACKEND=redis://redis:6379/0
+      - C_FORCE_ROOT=true
+    volumes:
+      - ./:/app/
+    depends_on:
+      - redis
+
+  celery-beat:
+    build: .
+    command: celery -A news_board beat -l info
+    depends_on:
+      - redis

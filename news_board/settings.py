@@ -82,11 +82,11 @@ WSGI_APPLICATION = 'news_board.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'newsdb',
+        'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': 'MyPassword-12',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'HOST': 'db',
+        'PASSWORD': 'postgres',
+        "PORT": 5432,
     }
 }
 
@@ -121,7 +121,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -137,14 +137,17 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_BROKER_URL = "redis://redis:6379"
+CELERY_RESULT_BACKEND = "redis://redis:6379"
+
 CELERY_BEAT_SCHEDULE = {
     "schedule_task": {
         "task": "backend.tasks.reset_up_votes",
-        "schedule": crontab(minute=0, hour=0),
+        "schedule": 10.0,
     },
 }
 
 """
+crontab(minute=0, hour=0)
 for testing purpose, you can use "schedule": 5.0 above
 """
