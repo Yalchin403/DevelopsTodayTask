@@ -9,3 +9,5 @@ Run following command to initiate the containers
 `docker-compose build --no-cache && docker-compose up`
 
 Additionally postman collection is available [here](https://shrt-url.ml/hEbAko)
+
+Just a side note here, in the postman collections, comments are not included as they are completely same with posts. 
