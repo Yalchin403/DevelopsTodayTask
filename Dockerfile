@@ -10,4 +10,3 @@ RUN pip install -r /requirements.txt
 RUN mkdir /app
 COPY . /app
 WORKDIR /app
-CMD gunicorn news_board.wsgi:application --bind 0.0.0.0:8000
